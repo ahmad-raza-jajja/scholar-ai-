@@ -224,9 +224,19 @@ def init_ss():
             st.session_state[k] = v
 
 # ── Engine factory ───────────────────────────────────────
-@st.cache_resource(show_spinner=False)
-def get_engine(gk: str, mk: str) -> AIEngine:
-    return AIEngine(groq_key=gk, gemini_key=mk)
+def get_engine(gk: str = "", mk: str = "") -> AIEngine:
+    # Always read secrets fresh - never cache
+    try:
+        groq_key = st.secrets.get("GROQ_API_KEY", "") or gk
+        gemini_key = st.secrets.get("GEMINI_API_KEY", "") or mk
+    except Exception:
+        groq_key = gk
+        gemini_key = mk
+    if not groq_key:
+        groq_key = st.session_state.get("api_keys", {}).get("groq", "")
+    if not gemini_key:
+        gemini_key = st.session_state.get("api_keys", {}).get("gemini", "")
+    return AIEngine(groq_key=groq_key, gemini_key=gemini_key)
 
 @st.cache_resource(show_spinner=False)
 def get_dm() -> DataManager:
@@ -378,9 +388,8 @@ def render_sidebar():
 
 # ── Helpers ──────────────────────────────────────────────
 def engine():
-    gk = st.session_state.api_keys.get("groq","")
-    mk = st.session_state.api_keys.get("gemini","")
-    return get_engine(gk, mk)
+    # get_engine() reads Streamlit secrets automatically
+    return get_engine()
 
 def H(text):
     st.markdown(f'<div class="sec-head">{text}</div>', unsafe_allow_html=True)
@@ -574,13 +583,13 @@ def page_ai_chat():
     H("🤖 AI Scholar Assistant")
     ai = engine()
 
-    # Status
-    has_groq = bool(st.session_state.api_keys.get("groq",""))
-    has_secret = bool(ai.groq_key)
-    if has_secret or has_groq:
+    # Status - check if groq actually initialized
+    if ai.groq_client:
         st.success("✅ Groq Llama3 Active — Full AI Mode")
+    elif ai.gemini_model:
+        st.success("✅ Gemini 1.5 Pro Active — Full AI Mode")
     else:
-        st.warning("⚠️ No API key found. Using fallback intelligence. Add Groq key in ⚙️ Settings for best results.")
+        st.warning("⚠️ API key not working. Check ⚙️ Settings or verify Streamlit Secrets.")
 
     # Quick questions
     st.markdown("**💡 Quick Questions:**")
@@ -1122,7 +1131,7 @@ def page_settings():
         if st.button("💾 Save API Keys", use_container_width=True, key="save_keys"):
             st.session_state.api_keys["groq"] = gk
             st.session_state.api_keys["gemini"] = mk
-            get_engine.clear()
+            pass  # engine not cached, no clear needed
             st.success("✅ API keys saved! AI models reloaded.")
 
         H("📊 Model Status")
