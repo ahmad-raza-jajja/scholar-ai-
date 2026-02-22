@@ -23,14 +23,26 @@ except ImportError:
 
 
 def get_secret(key: str, fallback: str = "") -> str:
+    """Read secret from Streamlit secrets or environment variable"""
+    # Try Streamlit secrets (works on Streamlit Cloud)
     try:
         import streamlit as st
+        # Direct key access is more reliable than .get()
+        try:
+            val = st.secrets[key]
+            if val:
+                return str(val).strip()
+        except (KeyError, Exception):
+            pass
+        # Try .get() as backup
         val = st.secrets.get(key, "")
         if val:
-            return val
+            return str(val).strip()
     except Exception:
         pass
-    return os.environ.get(key, fallback)
+    # Try environment variable
+    env_val = os.environ.get(key, fallback)
+    return str(env_val).strip() if env_val else fallback
 
 
 class AIEngine:
