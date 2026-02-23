@@ -538,7 +538,10 @@ def get_rag():
     return rag
 
 def get_engine():
-    """Fresh engine - Directly reads from Streamlit Secrets"""
+    # Debug line: Ye app ki screen par dikhayega ke key mili ya nahi
+    if "GROQ_API_KEY" not in st.secrets:
+        st.error("🚨 Secrets panel mein 'GROQ_API_KEY' nahi mili!")
+    
     gk = st.secrets.get("GROQ_API_KEY", "")
     mk = st.secrets.get("GEMINI_API_KEY", "")
     engine = AIEngine(groq_key=gk, gemini_key=mk)
