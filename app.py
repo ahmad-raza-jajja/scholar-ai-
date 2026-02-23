@@ -537,13 +537,34 @@ def get_rag():
     rag.build_index(dm.df)
     return rag
 
+@st.cache_resource(show_spinner=False)  # ← YEH LINE ADD KARO - ZARURI HAI
 def get_engine():
-    # Debug line: Ye app ki screen par dikhayega ke key mili ya nahi
-    if "GROQ_API_KEY" not in st.secrets:
-        st.error("🚨 Secrets panel mein 'GROQ_API_KEY' nahi mili!")
+    # Try secrets with bracket notation first
+    gk = ""
+    mk = ""
     
-    gk = st.secrets.get("GROQ_API_KEY", "")
-    mk = st.secrets.get("GEMINI_API_KEY", "")
+    try:
+        gk = str(st.secrets["GROQ_API_KEY"]).strip()
+        if gk == "None":
+            gk = ""
+    except (KeyError, Exception):
+        pass
+    
+    if not gk:
+        try:
+            gk = str(st.secrets.get("GROQ_API_KEY", "")).strip()
+            if gk == "None":
+                gk = ""
+        except Exception:
+            pass
+    
+    try:
+        mk = str(st.secrets.get("GEMINI_API_KEY", "")).strip()
+        if mk == "None":
+            mk = ""
+    except Exception:
+        pass
+    
     engine = AIEngine(groq_key=gk, gemini_key=mk)
     engine.set_rag(get_rag())
     return engine
