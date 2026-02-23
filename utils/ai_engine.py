@@ -233,12 +233,20 @@ def get_groq_key() -> str:
 
 class AIEngine:
     def __init__(self, groq_key: str = "", gemini_key: str = ""):
-        secret_key = get_groq_key()
-        self.groq_key = secret_key or groq_key.strip()
-        self.gemini_key = gemini_key
-        self.groq_client = None
-        self.rag = None
-        self._init_models()
+    self.groq_key = "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"
+    self.gemini_key = gemini_key
+    self.groq_client = None
+    self.rag = None
+    self._init_models()
+
+def _init_models(self):
+    if GROQ_AVAILABLE and self.groq_key:
+        try:
+            self.groq_client = Groq(api_key=self.groq_key)
+            print(f"Groq client initialized: {self.groq_key[:10]}...")
+        except Exception as e:
+            print(f"Groq init failed: {e}")
+            self.groq_client = None
 
     def _init_models(self):
         if GROQ_AVAILABLE and self.groq_key:
