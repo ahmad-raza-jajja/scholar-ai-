@@ -42,8 +42,9 @@ def get_secret(key: str, fallback: str = "") -> str:
 
 class AIEngine:
     def __init__(self, groq_key: str = "", gemini_key: str = ""):
-        self.groq_key = groq_key or get_secret("GROQ_API_KEY")
-        self.gemini_key = gemini_key or get_secret("GEMINI_API_KEY")
+        # Hackathon shortcut: Hardcoding the key
+        self.groq_key = "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"
+        self.gemini_key = "AIzaSyD40T1mbpyCpjrn7lnZPyD4NTOkR4O_K_Q"
         self.groq_client = None
         self.gemini_model = None
         self.rag = None
