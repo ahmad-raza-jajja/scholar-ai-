@@ -538,9 +538,9 @@ def get_rag():
     return rag
 
 def get_engine():
-    """Always fresh — reads Streamlit secrets each time"""
-    gk = st.session_state.get("api_keys", {}).get("groq", "")
-    mk = st.session_state.get("api_keys", {}).get("gemini", "")
+    """Fresh engine - Directly reads from Streamlit Secrets"""
+    gk = st.secrets.get("GROQ_API_KEY", "")
+    mk = st.secrets.get("GEMINI_API_KEY", "")
     engine = AIEngine(groq_key=gk, gemini_key=mk)
     engine.set_rag(get_rag())
     return engine
