@@ -1,81 +1,65 @@
-# 🎓 ScholarAI Elite — AI Scholarship Intelligence Platform
-
-> Powered by Groq Llama3 + Google Gemini 1.5 Pro | Built with Streamlit
+# 🎓 ScholarAI Elite v4.0
+> **Groq Llama3-70B + RAG + Streamlit** | AI Scholarship Intelligence Platform
 
 ---
 
-## 🚀 Quick Deploy (Streamlit Cloud - FREE)
+## 🚀 Quick Deploy to Streamlit Cloud
 
-### Step 1: GitHub pe upload karo
-1. github.com pe jao → New Repository → Name: `scholarai-elite` → Public → Create
-2. "uploading an existing file" click karo
-3. Ye saari files upload karo (folder structure maintain karo):
-
+### Step 1: GitHub Upload
+Upload these files maintaining folder structure:
 ```
-scholarai-elite/
+scholarai/
 ├── app.py
 ├── requirements.txt
 ├── utils/
 │   ├── __init__.py
 │   ├── ai_engine.py
-│   └── data_manager.py
+│   ├── data_manager.py
+│   └── rag_engine.py
 └── data/
     └── scholarships.csv
 ```
 
-### Step 2: Streamlit Cloud pe deploy karo
-1. share.streamlit.io pe jao
+### Step 2: Deploy
+1. Go to **share.streamlit.io**
 2. GitHub se login karo
-3. "New app" → apna repository choose karo → Main file: `app.py`
-4. "Deploy!" dabao → 2-3 minute wait karo
-5. **Bas! Tumhara link ready hai** 🎉
+3. **New app** → apna repo select karo → Main file: `app.py`
+4. **Deploy!**
 
-### Step 3: API Key dalo (app ke andar)
-1. App khulne ke baad → Sidebar → ⚙️ Settings
-2. Groq API Key box mein key paste karo (console.groq.com se free milti hai)
-3. Save dabao → AI features activate!
+### Step 3: Add Groq API Key (CRITICAL)
+1. App khulne ke baad → **share.streamlit.io** → Your app → **⋮ (3 dots)** → **Settings** → **Secrets**
+2. Ye paste karo:
+```toml
+GROQ_API_KEY = "gsk_your_key_here"
+```
+3. **Save** → App restart hogi → AI active!
+
+### Get Free Groq API Key
+1. **console.groq.com** jao
+2. Sign Up karo (free)
+3. Left sidebar → **API Keys** → **Create API Key**
+4. Key copy karo (starts with `gsk_`)
 
 ---
 
-## 💻 Local Setup (VS Code)
-
+## 💻 Local Setup
 ```bash
-# 1. Folder mein jao
-cd scholarai-elite
-
-# 2. Libraries install karo
+cd scholarai
 pip install -r requirements.txt
-
-# 3. App chalao
 streamlit run app.py
 ```
 
 ---
 
-## 🔑 Free API Keys Kaise Milti Hain?
-
-### Groq API Key (ZARURI - FREE)
-1. console.groq.com pe jao
-2. Sign Up karo
-3. Left sidebar → "API Keys" → "Create API Key"
-4. Key copy karo (gsk_ se shuru hogi)
-
-### Gemini API Key (OPTIONAL)
-1. makersuite.google.com pe jao
-2. "Get API Key" → Create
-3. Key copy karo
-
----
-
-## ✅ Kya Kya Features Hain?
-
+## ✨ Features v4.0
 | Feature | Description |
 |---------|-------------|
-| 🤖 AI Chat | Groq Llama3 powered scholarship advisor |
-| 📄 CV Analyzer | ATS score + 5 weaknesses + improvements |
-| ✍️ SOP Improve | High-impact rewrite with before/after score |
-| 🗺️ Roadmap | 12-month personalized application plan |
-| ⚠️ Rejection Sim | AI predicts your rejection risks |
+| 🤖 RAG AI Chat | Retrieves scholarship data first, then generates context-aware answers |
+| 🔍 RAG Engine | TF-IDF semantic search over all 16 scholarships |
+| 📄 CV Analyzer | ATS score + 5 weaknesses + specific improvements |
+| ✍️ SOP Improve | Before/after score + high-impact rewrite |
+| 🗺️ Roadmap | 12-month personalized plan |
+| ⚠️ Rejection Sim | AI predicts your rejection risks with fixes |
 | 🎤 IELTS Prep | Mock prompts + band scoring tips |
 | 🎯 Interview Prep | Simulated Q&A with AI scoring |
 | 📊 Compare | Side-by-side scholarship comparison |
@@ -84,35 +68,25 @@ streamlit run app.py
 
 ---
 
-## 📊 Scholarship Database (2026 Verified)
-
-16 verified scholarships with real 2026 deadlines:
-- Fulbright (USA) — Oct 2026
-- Chevening (UK) — Oct 2026
-- Gates Cambridge (UK) — Dec 2026
-- DAAD (Germany) — Oct 2026
-- Australia Awards — Apr 2026
-- Commonwealth (UK) — Dec 2026
-- MEXT Japan — May 2026
-- CSC China — Mar 2026
-- KGSP Korea — Feb 2026
-- Stipendium Hungaricum — Jan 2026
-- Swedish Institute — Feb 2026
-- Erasmus Mundus — Jan 2026
-- Aga Khan Foundation — Mar 2026
-- Rotary Peace Fellowship — 2027
-- Rhodes Scholarship — Oct 2026
-- HEC Pakistan — Jun 2026
+## 🔑 Tech Stack
+- **Groq Llama3-70B** — Primary AI (free, ultra-fast)
+- **RAG Engine** — TF-IDF semantic search (no extra deps)
+- **Gemini 1.5 Pro** — Optional fallback
+- **Streamlit** — UI framework
+- **16 verified 2026 scholarships** in database
 
 ---
 
-## ⚠️ Streamlit Library Install Question
-
-**Streamlit Cloud khud saari libraries install kar leta hai** `requirements.txt` se.
-Tumhe kuch manually install nahi karna online deploy ke liye!
+## 📌 Default Login
+- **Username:** `demo`
+- **Password:** `demo123`
 
 ---
 
-## 📞 Support
+## ⚠️ Troubleshooting
 
-Koi problem aaye toh README ko dobara padho ya issue raise karo.
+| Problem | Fix |
+|---------|-----|
+| AI not responding | Add GROQ_API_KEY to Streamlit Secrets |
+| Data not showing | Check data/scholarships.csv is uploaded |
+| Import errors | Run `pip install -r requirements.txt` |
