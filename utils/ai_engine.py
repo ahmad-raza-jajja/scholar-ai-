@@ -208,30 +208,7 @@ REJECTION_DATA = """
 
 
 def get_groq_key() -> str:
-    # 1. Environment variable check
-    key = os.environ.get("GROQ_API_KEY", "").strip()
-    if key:
-        return key
-    
-    # 2. Streamlit secrets - bracket notation (most reliable)
-    try:
-        import streamlit as st
-        key = str(st.secrets["GROQ_API_KEY"]).strip()
-        if key and key != "None" and key != "":
-            return key
-    except (KeyError, Exception):
-        pass
-    
-    # 3. Streamlit secrets - .get() fallback
-    try:
-        import streamlit as st
-        key = str(st.secrets.get("GROQ_API_KEY", "")).strip()
-        if key and key != "None" and key != "":
-            return key
-    except Exception:
-        pass
-    
-    return ""
+    return "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"
 
 
 class AIEngine:
