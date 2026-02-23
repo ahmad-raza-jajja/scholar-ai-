@@ -239,12 +239,12 @@ class AIEngine:
     self.rag = None
     self._init_models()
 
-def _init_models(self):
-    if GROQ_AVAILABLE and self.groq_key:
-        try:
-            self.groq_client = Groq(api_key=self.groq_key)
-        except Exception as e:
-            self.groq_client = None
+    def _init_models(self):
+        if GROQ_AVAILABLE and self.groq_key:
+            try:
+                self.groq_client = Groq(api_key=self.groq_key)
+            except Exception as e:
+                self.groq_client = None
 
     def set_rag(self, rag_engine):
         self.rag = rag_engine
